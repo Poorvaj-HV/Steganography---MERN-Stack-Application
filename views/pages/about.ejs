@@ -1,0 +1,267 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About StegoHide</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-50">
+    <custom-navbar></custom-navbar>
+    
+    <main class="container mx-auto px-4 py-12">
+        <div class="max-w-4xl mx-auto">
+            Hero Section -->
+            <!-- <section class="text-center mb-16">
+                <div class="bg-indigo-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i data-feather="info" class="text-indigo-600 w-10 h-10"></i>
+                </div>
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">About StegoHide</h1>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">The secure platform for hiding your secrets in plain sight using advanced steganography techniques.</p>
+            </section>
+            
+            What is Steganography Section -->
+            <!-- <section class="mb-16">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="p-6 md:p-8">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <i data-feather="eye-off"></i> What is Steganography?
+                        </h2>
+                        <div class="prose max-w-none text-gray-600">
+                            <p>Steganography is the practice of concealing a message within another medium, such as an image, audio file, or video. Unlike cryptography, which makes a message unreadable, steganography makes the message invisible.</p>
+                            <p>Our technology uses the least significant bit (LSB) method to embed your secret message in the pixels of an image. This technique alters the pixel values slightly, making the changes imperceptible to the human eye while still allowing the original image to appear normal.</p>
+                            <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 my-4">
+                                <h3 class="font-semibold text-indigo-800 mb-2">Example:</h3>
+                                <p class="text-indigo-700">You can hide a secret message in a vacation photo and share it normally. Only those who know it contains hidden data (and have the password if encrypted) can extract the message.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            Team Section -->
+            <!--<section class="mb-16">
+                <h2 class="text-2xl font-bold text-center text-gray-800 mb-8">Meet Our Team</h2>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden text-center">
+                        <img src="http://static.photos/people/400x400/1" alt="Team Member" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="font-bold text-lg mb-1">Alex Chen</h3>
+                            <p class="text-gray-500 text-sm mb-3">Founder & CEO</p>
+                            <p class="text-gray-600 text-sm">Security engineer with 10+ years experience in cryptography.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden text-center">
+                        <img src="http://static.photos/people/400x400/2" alt="Team Member" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="font-bold text-lg mb-1">Maria Garcia</h3>
+                            <p class="text-gray-500 text-sm mb-3">Lead Developer</p>
+                            <p class="text-gray-600 text-sm">Specializes in data hiding techniques and web applications.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden text-center">
+                        <img src="http://static.photos/people/400x400/3" alt="Team Member" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="font-bold text-lg mb-1">James Wilson</h3>
+                            <p class="text-gray-500 text-sm mb-3">UX Designer</p>
+                            <p class="text-gray-600 text-sm">Creates intuitive interfaces for complex security tools.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden text-center">
+                        <img src="http://static.photos/people/400x400/4" alt="Team Member" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="font-bold text-lg mb-1">Sophie Martin</h3>
+                            <p class="text-gray-500 text-sm mb-3">Security Analyst</p>
+                            <p class="text-gray-600 text-sm">Ensures our steganography methods remain secure.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+             FAQ Section 
+            <section class="mb-16">
+                <h2 class="text-2xl font-bold text-center text-gray-800 mb-8">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <button class="faq-question w-full text-left p-6 flex justify-between items-center">
+                            <h3 class="font-semibold text-gray-800">Is steganography legal?</h3>
+                            <i data-feather="chevron-down" class="text-gray-400 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 hidden">
+                            <p class="text-gray-600">Yes, steganography is completely legal when used for legitimate purposes. Like any technology, it can be misused, but our platform is designed for personal privacy and secure communication.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <button class="faq-question w-full text-left p-6 flex justify-between items-center">
+                            <h3 class="font-semibold text-gray-800">How secure is StegoHide?</h3>
+                            <i data-feather="chevron-down" class="text-gray-400 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 hidden">
+                            <p class="text-gray-600">StegoHide uses industry-standard techniques to ensure your messages are securely hidden. For additional protection, we recommend using our optional password encryption feature which adds AES-256 encryption to your hidden messages.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <button class="faq-question w-full text-left p-6 flex justify-between items-center">
+                            <h3 class="font-semibold text-gray-800">Does encoding reduce image quality?</h3>
+                            <i data-feather="chevron-down" class="text-gray-400 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 hidden">
+                            <p class="text-gray-600">The changes to the image are minimal and usually imperceptible. However, very large messages in small images may cause slight quality reduction. We recommend using images with more pixels for longer messages.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <button class="faq-question w-full text-left p-6 flex justify-between items-center">
+                            <h3 class="font-semibold text-gray-800">Can I decode images from other steganography tools?</h3>
+                            <i data-feather="chevron-down" class="text-gray-400 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 hidden">
+                            <p class="text-gray-600">StegoHide uses its own proprietary algorithm, so it can only decode images encoded with our tool. Other steganography tools may use different methods that aren't compatible.</p>
+                        </div>
+                    </div>
+                </div>
+            </section> -->
+            
+            <!-- Call to Action -->
+            <!-- <section class="text-center">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg p-8 text-white">
+                    <h2 class="text-2xl font-bold mb-4">Ready to hide your secrets?</h2>
+                    <p class="text-indigo-100 mb-6 max-w-2xl mx-auto">Start using StegoHide today to securely communicate with complete deniability.</p>
+                    <a href="encode.html" class="bg-white text-indigo-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-medium inline-flex items-center gap-2 transition-colors duration-300">
+                        <i data-feather="lock"></i> Get Started
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <custom-footer></custom-footer> -->
+    
+    <!-- <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+        
+        // FAQ toggle functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const icon = question.querySelector('i');
+                
+                answer.classList.toggle('hidden');
+                icon.style.transform = answer.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            });
+        }); -->
+    <!-- </script> 
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About StegoHide</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+    <custom-navbar></custom-navbar>
+    
+    <main class="container py-5">
+        <div class="mx-auto" style="max-width: 960px;">
+            <!-- Hero Section -->
+            <section class="text-center mb-5">
+                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-4 mb-4">
+                    <i class="bi bi-info-circle fs-1 text-primary"></i>
+                </div>
+                <h1 class="display-4 fw-bold mb-3">About StegoHide</h1>
+                <p class="lead text-muted mx-auto" style="max-width: 600px;">The secure platform for hiding your secrets in plain sight using advanced steganography techniques.</p>
+            </section>
+            
+            <!-- What is Steganography Section -->
+            <section class="mb-5">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4 p-md-5">
+                        <h2 class="h3 fw-bold mb-4">
+                            <i class="bi bi-eye-slash me-2"></i> What is Steganography?
+                        </h2>
+                        <div class="text-muted">
+                            <p>Steganography is the practice of concealing a message within another medium, such as an image, audio file, or video. Unlike cryptography, which makes a message unreadable, steganography makes the message invisible.</p>
+                            <p>Our technology uses the least significant bit (LSB) method to embed your secret message in the pixels of an image. This technique alters the pixel values slightly, making the changes imperceptible to the human eye while still allowing the original image to appear normal.</p>
+                            <div class="alert alert-primary">
+                                <h3 class="h6 fw-bold">Example:</h3>
+                                <p class="mb-0">You can hide a secret message in a vacation photo and share it normally. Only those who know it contains hidden data (and have the password if encrypted) can extract the message.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Team Section -->
+            <section class="mb-5">
+                <h2 class="h3 text-center fw-bold mb-4">Meet Our Team</h2>
+                <div class="row g-4">
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="card shadow-sm text-center h-100">
+                            <img src="http://static.photos/people/400x400/1" class="card-img-top" alt="Team Member" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h3 class="h5 fw-bold mb-1">Alex Chen</h3>
+                                <p class="text-muted small mb-2">Founder & CEO</p>
+                                <p class="small text-muted mb-0">Security engineer with 10+ years experience in cryptography.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Repeat similar card structure for other team members -->
+                </div>
+            </section>
+            
+            <!-- FAQ Section -->
+            <section class="mb-5">
+                <h2 class="h3 text-center fw-bold mb-4">Frequently Asked Questions</h2>
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                Is steganography legal?
+                            </button>
+                        </h3>
+                        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted">
+                                Yes, steganography is completely legal when used for legitimate purposes. Like any technology, it can be misused, but our platform is designed for personal privacy and secure communication.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Repeat accordion-item structure for other FAQs -->
+                </div>
+            </section>
+            
+            <!-- Call to Action -->
+            <section class="text-center">
+                <div class="card bg-primary text-white">
+                    <div class="card-body p-5">
+                        <h2 class="h3 fw-bold mb-3">Ready to hide your secrets?</h2>
+                        <p class="mb-4">Start using StegoHide today to securely communicate with complete deniability.</p>
+                        <a href="encode.html" class="btn btn-light">
+                            <i class="bi bi-lock-fill me-2"></i>Get Started
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <custom-footer></custom-footer>
+    
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

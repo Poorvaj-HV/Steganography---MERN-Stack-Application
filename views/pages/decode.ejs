@@ -1,0 +1,291 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decode Message - StegoHide</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-50">
+    <custom-navbar></custom-navbar>
+    
+    <main class="container mx-auto px-4 py-12">
+        <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6 md:p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-2">
+                <i data-feather="unlock"></i> Reveal Hidden Message
+            </h1>
+            <p class="text-gray-600 mb-8">Upload an encoded image to extract the secret message hidden within it.</p>
+            
+            <div class="space-y-8">
+                <div>
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700">1. Upload Encoded Image</h2>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center mb-6 cursor-pointer hover:border-green-300 transition-colors duration-300">
+                        <input type="file" id="encoded-image-upload" class="file-input" accept="image/*" data-preview-target="encoded-image-preview">
+                        <label for="encoded-image-upload" class="file-label mb-4 bg-green-600 hover:bg-green-700">
+                            <i data-feather="upload" class="mr-2"></i> Choose Encoded Image
+                        </label>
+                        <p class="text-gray-500 text-sm">Supports JPG, PNG up to 5MB</p>
+                    </div>
+                    <div class="relative">
+                        <img id="encoded-image-preview" src="" alt="Encoded Image Preview" class="hidden w-full rounded-lg shadow-md">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 hidden items-center justify-center rounded-lg">
+                            <span class="text-white font-medium">Encoded Image Preview</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="password-section" class="hidden">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700">2. Enter Decryption Password</h2>
+                    <div class="relative">
+                        <input type="password" id="decryption-password" class="w-full border border-gray-300 rounded-lg p-4 pr-12 focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors duration-300" placeholder="Enter password if message was encrypted">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                            <i data-feather="eye-off" class="text-gray-400 cursor-pointer" id="toggle-password"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="decode-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300 flex items-center justify-center gap-2">
+                    <i data-feather="key"></i> Decode Message
+                </button>
+                
+                Result Section (Hidden by default) -->
+                <!-- <div id="result-section" class="hidden">
+                    <div class="border-t border-gray-200 pt-8">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                            <i data-feather="check-circle" class="text-green-500"></i> Message Successfully Decoded!
+                        </h2>
+                        
+                        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                            <h3 class="text-lg font-semibold mb-3 text-gray-700">Extracted Message</h3>
+                            <div class="message-box bg-white p-4 rounded-md">
+                                <p id="extracted-message" class="whitespace-pre-line">This is where your decoded message will appear...</p>
+                            </div>
+                            
+                            <div class="mt-6 flex gap-3">
+                                <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors duration-300 flex items-center gap-2">
+                                    <i data-feather="copy"></i> Copy Text
+                                </button>
+                                <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors duration-300 flex items-center gap-2">
+                                    <i data-feather="save"></i> Save as File
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <custom-footer></custom-footer>
+    
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+        
+        // Toggle password visibility
+        document.getElementById('toggle-password')?.addEventListener('click', function() {
+            const passwordInput = document.getElementById('decryption-password');
+            const icon = this;
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.setAttribute('data-feather', 'eye');
+            } else {
+                passwordInput.type = 'password';
+                icon.setAttribute('data-feather', 'eye-off');
+            }
+            feather.replace();
+        });
+        
+        // Demo functionality for decode button
+        document.getElementById('decode-btn').addEventListener('click', function() {
+            const decodeBtn = this;
+            const originalText = decodeBtn.innerHTML;
+            
+            // Show loading state
+            decodeBtn.innerHTML = '<i data-feather="loader" class="animate-spin"></i> Decoding...';
+            feather.replace();
+            
+            // Simulate decoding process
+            setTimeout(() => {
+                // Show result section
+                document.getElementById('result-section').classList.remove('hidden');
+                
+                // For demo purposes, show a sample message
+                document.getElementById('extracted-message').textContent = 
+                    "This is a sample decoded message.\n\n" +
+                    "In a real application, this would be the actual message extracted from the image using steganography techniques. " +
+                    "The message was hidden by slightly altering the pixel values of the image in a way that's imperceptible to the human eye.\n\n" +
+                    "🔐 Steganography is a powerful technique for covert communication!";
+                
+                // Reset button
+                decodeBtn.innerHTML = originalText;
+                feather.replace();
+                
+                // Scroll to results
+                document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+            }, 2000);
+        });
+    </script>
+</body> -->
+<!-- </html> --> 
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decode Message - StegoHide</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+    <custom-navbar></custom-navbar>
+    
+    <main class="container py-5">
+        <div class="card shadow-sm mx-auto" style="max-width: 800px;">
+            <div class="card-body p-4 p-md-5">
+                <h1 class="display-6 fw-bold mb-2">
+                    <i class="bi bi-unlock-fill me-2"></i> Reveal Hidden Message
+                </h1>
+                <p class="text-muted mb-4">Upload an encoded image to extract the secret message hidden within it.</p>
+
+                <div class="space-y-4">
+                    <!-- Upload Section -->
+                    <div class="mb-4">
+                        <div class="border border-2 border-dashed rounded p-4 text-center">
+                            <input type="file" id="image-upload" class="d-none" accept="image/*">
+                            <label for="image-upload" class="btn btn-primary mb-3">
+                                <i class="bi bi-upload me-2"></i> Upload Encoded Image
+                            </label>
+                            <p class="small text-muted mb-0">Select the image containing the hidden message</p>
+                        </div>
+                        
+                        <div class="position-relative mt-3">
+                            <img id="image-preview" src="" alt="Preview" class="d-none w-100 rounded shadow-sm">
+                        </div>
+                    </div>
+
+                    <!-- Password Section -->
+                    <div id="password-section" class="d-none mb-4">
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="decryption-password" placeholder="Enter password">
+                            <label for="decryption-password">Decryption Password (if required)</label>
+                            <button class="btn btn-link position-absolute top-50 end-0 translate-middle-y" id="toggle-password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button id="decode-btn" class="btn btn-success w-100">
+                        <i class="bi bi-key-fill me-2"></i> Decode Message
+                    </button>
+
+                    <!-- Result Section -->
+                    <div id="result-section" class="d-none mt-4">
+                        <hr class="my-4">
+                        <div class="alert alert-success">
+                            <h4 class="alert-heading"><i class="bi bi-check-circle-fill me-2"></i>Message Found!</h4>
+                            <p class="mb-0">The hidden message was successfully extracted:</p>
+                        </div>
+                        
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <p id="extracted-message" class="mb-0 font-monospace"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 mt-4">
+                            <button class="btn btn-primary" onclick="copyToClipboard()">
+                                <i class="bi bi-clipboard me-2"></i> Copy Message
+                            </button>
+                            <button class="btn btn-outline-primary">
+                                <i class="bi bi-download me-2"></i> Save as Text File
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <custom-footer></custom-footer>
+    
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle password visibility
+        document.getElementById('toggle-password')?.addEventListener('click', function() {
+            const passwordInput = document.getElementById('decryption-password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.replace('bi-eye', 'bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.replace('bi-eye-slash', 'bi-eye');
+            }
+        });
+        
+        // Demo decode functionality
+        document.getElementById('decode-btn').addEventListener('click', function() {
+            const decodeBtn = this;
+            const originalText = decodeBtn.innerHTML;
+            
+            // Show loading state
+            decodeBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Decoding...';
+            decodeBtn.disabled = true;
+            
+            // Simulate decoding process
+            setTimeout(() => {
+                // Show result section
+                document.getElementById('result-section').classList.remove('d-none');
+                
+                // For demo purposes, show a sample message
+                document.getElementById('extracted-message').textContent = 'This is a sample hidden message that was extracted from the image.';
+                
+                // Reset button
+                decodeBtn.innerHTML = originalText;
+                decodeBtn.disabled = false;
+                
+                // Scroll to results
+                document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+            }, 2000);
+        });
+
+        // Image preview functionality
+        document.getElementById('image-upload').addEventListener('change', function(e) {
+            const preview = document.getElementById('image-preview');
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('d-none');
+                    document.getElementById('password-section').classList.remove('d-none');
+                }
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        // Copy to clipboard function
+        function copyToClipboard() {
+            const text = document.getElementById('extracted-message').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Message copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "name": "steganography---a-middleware-application",
+  "version": "1.0.0",
+  "description": "Deep learning framework for Identifying and Analyzing of hidden data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Poorvaj-HV/Steganography---A-Middleware-Application.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Poorvaj-HV/Steganography---A-Middleware-Application/issues"
+  },
+  "homepage": "https://github.com/Poorvaj-HV/Steganography---A-Middleware-Application#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.2",
+    "nodemon": "^3.1.10"
+  }
+}

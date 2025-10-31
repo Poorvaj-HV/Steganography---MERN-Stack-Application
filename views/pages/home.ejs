@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StegoHide - Hide Secrets in Images</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+</head>
+<body class="bg-gray-50">
+
+    <!-- <h1>Home Page</h1> -->
+
+    <custom-navbar></custom-navbar>
+    
+    <main class="container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <section class="flex flex-col md:flex-row items-center justify-between gap-12 py-16">
+            <div class="md:w-1/2">
+                <h1 class="text-5xl font-bold text-gray-800 mb-6">Hide Secrets in Plain Sight</h1>
+                <p class="text-xl text-gray-600 mb-8">StegoHide uses advanced steganography techniques to embed secret messages within ordinary images, making them invisible to the naked eye.</p>
+                <div class="flex gap-4">
+                    <a href="encode.html" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium text-lg transition-colors duration-300 flex items-center gap-2">
+                        <i data-feather="lock"></i> Hide a Message
+                    </a>
+                    <a href="decode.html" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium text-lg transition-colors duration-300 flex items-center gap-2">
+                        <i data-feather="unlock"></i> Reveal a Message
+                    </a>
+                </div>
+            </div>
+            <div class="md:w-1/2">
+                <div class="relative">
+                    <img src="http://static.photos/technology/640x360/42" alt="Steganography Example" class="rounded-xl shadow-xl w-full">
+                    <div class="absolute inset-0 bg-indigo-600 opacity-0 hover:opacity-20 transition-opacity duration-300 rounded-xl"></div>
+                </div>
+            </div>
+        </section>
+
+         <!-- How It Works Section -->
+        <section class="py-16">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">How Steganography Works</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i data-feather="upload" class="text-indigo-600 w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-3">Upload Image</h3>
+                    <p class="text-gray-600 text-center">Choose any image to hide your secret message within its pixels.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i data-feather="edit-2" class="text-indigo-600 w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-3">Enter Message</h3>
+                    <p class="text-gray-600 text-center">Type your secret text that will be invisibly embedded in the image.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i data-feather="download" class="text-indigo-600 w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-3">Download & Share</h3>
+                    <p class="text-gray-600 text-center">Get your encoded image that looks normal but contains hidden data.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <custom-footer></custom-footer>
+    
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+        VANTA.NET({
+            el: "body",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x6366f1,
+            backgroundColor: 0xf9fafb,
+            points: 10.00,
+            maxDistance: 20.00,
+            spacing: 15.00
+        });
+    </script>
+</body>
+</html>

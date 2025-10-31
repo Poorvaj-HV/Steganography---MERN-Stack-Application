@@ -1,0 +1,486 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - StegoHide</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-50">
+    <custom-navbar></custom-navbar>
+    
+    <main class="container mx-auto px-4 py-12">
+        <div id="login-form" class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-feather="shield" class="text-indigo-600 w-8 h-8"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800">Admin Login</h1>
+                <p class="text-gray-600">Enter your credentials to access the admin dashboard</p>
+            </div>
+            
+            <form class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <input type="text" id="username" class="w-full border border-gray-300 rounded-lg p-3 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors duration-300" placeholder="Enter admin username">
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <div class="relative">
+                        <input type="password" id="password" class="w-full border border-gray-300 rounded-lg p-3 pr-12 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors duration-300" placeholder="Enter your password">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                            <i data-feather="eye-off" class="text-gray-400 cursor-pointer" id="toggle-admin-password"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="remember" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <label for="remember" class="ml-2 text-sm text-gray-700">Remember me</label>
+                    </div>
+                    <a href="#" class="text-sm text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+                </div>
+                
+                <button type="button" id="login-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300 flex items-center justify-center gap-2">
+                    <i data-feather="log-in"></i> Login
+                </button>
+            </form>
+        </div>
+        
+        <div id="dashboard" class="hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-2">
+                    <i data-feather="shield"></i> Admin Dashboard
+                </h1>
+                <button id="logout-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors duration-300 flex items-center gap-2">
+                    <i data-feather="log-out"></i> Logout
+                </button>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm">Total Encodes</p>
+                            <h3 class="text-2xl font-bold mt-1">1,248</h3>
+                        </div>
+                        <div class="bg-indigo-100 p-3 rounded-lg">
+                            <i data-feather="lock" class="text-indigo-600 w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <p class="text-green-600 text-sm mt-2 flex items-center">
+                        <i data-feather="arrow-up" class="w-4 h-4 mr-1"></i> 12% from last month
+                    </p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm">Total Decodes</p>
+                            <h3 class="text-2xl font-bold mt-1">896</h3>
+                        </div>
+                        <div class="bg-green-100 p-3 rounded-lg">
+                            <i data-feather="unlock" class="text-green-600 w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <p class="text-green-600 text-sm mt-2 flex items-center">
+                        <i data-feather="arrow-up" class="w-4 h-4 mr-1"></i> 8% from last month
+                    </p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm">Active Users</p>
+                            <h3 class="text-2xl font-bold mt-1">342</h3>
+                        </div>
+                        <div class="bg-blue-100 p-3 rounded-lg">
+                            <i data-feather="users" class="text-blue-600 w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <p class="text-red-600 text-sm mt-2 flex items-center">
+                        <i data-feather="arrow-down" class="w-4 h-4 mr-1"></i> 5% from last week
+                    </p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm">Storage Used</p>
+                            <h3 class="text-2xl font-bold mt-1">4.2 GB</h3>
+                        </div>
+                        <div class="bg-purple-100 p-3 rounded-lg">
+                            <i data-feather="hard-drive" class="text-purple-600 w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <p class="text-green-600 text-sm mt-2 flex items-center">
+                        <i data-feather="alert-circle" class="w-4 h-4 mr-1"></i> 68% of limit
+                    </p>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-800">Recent Activity</h2>
+                </div>
+                <div class="divide-y divide-gray-200">
+                    <div class="p-6 hover:bg-gray-50 transition-colors duration-200 flex items-start gap-4">
+                        <div class="bg-indigo-100 p-3 rounded-lg">
+                            <i data-feather="lock" class="text-indigo-600 w-5 h-5"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <h3 class="font-medium">Image Encoded</h3>
+                                <span class="text-sm text-gray-500">2 min ago</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">User encoded a 1.2MB image with 128 characters</p>
+                        </div>
+                    </div>
+                    <div class="p-6 hover:bg-gray-50 transition-colors duration-200 flex items-start gap-4">
+                        <div class="bg-green-100 p-3 rounded-lg">
+                            <i data-feather="unlock" class="text-green-600 w-5 h-5"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <h3 class="font-medium">Image Decoded</h3>
+                                <span class="text-sm text-gray-500">15 min ago</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">User decoded an image to reveal a 64 character message</p>
+                        </div>
+                    </div>
+                    <div class="p-6 hover:bg-gray-50 transition-colors duration-200 flex items-start gap-4">
+                        <div class="bg-red-100 p-3 rounded-lg">
+                            <i data-feather="alert-triangle" class="text-red-600 w-5 h-5"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <h3 class="font-medium">Failed Decode Attempt</h3>
+                                <span class="text-sm text-gray-500">32 min ago</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">User tried to decode a non-encoded image</p>
+                        </div>
+                    </div>
+                    <div class="p-6 hover:bg-gray-50 transition-colors duration-200 flex items-start gap-4">
+                        <div class="bg-blue-100 p-3 rounded-lg">
+                            <i data-feather="user" class="text-blue-600 w-5 h-5"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <h3 class="font-medium">New User Registered</h3>
+                                <span class="text-sm text-gray-500">1 hour ago</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">New user account created (username: johndoe123)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="text-xl font-semibold text-gray-800">User Statistics</h2>
+                    </div>
+                    <div class="p-6">
+                        <canvas id="user-chart" height="250"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="text-xl font-semibold text-gray-800">Encode/Decode Ratio</h2>
+                    </div>
+                    <div class="p-6">
+                        <canvas id="ratio-chart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <custom-footer></custom-footer>
+    
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+        
+        // Toggle password visibility
+        document.getElementById('toggle-admin-password')?.addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this;
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.setAttribute('data-feather', 'eye');
+            } else {
+                passwordInput.type = 'password';
+                icon.setAttribute('data-feather', 'eye-off');
+            }
+            feather.replace();
+        });
+        
+        // Demo login functionality
+        document.getElementById('login-btn')?.addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (!username || !password) {
+                alert('Please enter both username and password');
+                return;
+            }
+            
+            // Show loading state
+            const loginBtn = document.getElementById('login-btn');
+            const originalText = loginBtn.innerHTML;
+            loginBtn.innerHTML = '<i data-feather="loader" class="animate-spin"></i> Authenticating...';
+            feather.replace();
+            
+            // Simulate authentication
+            setTimeout(() => {
+                // Hide login form and show dashboard
+                document.getElementById('login-form').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                
+                // Initialize charts
+                initCharts();
+                
+                // Reset button
+                loginBtn.innerHTML = originalText;
+                feather.replace();
+            }, 1500);
+        });
+        
+        // Logout functionality
+        document.getElementById('logout-btn')?.addEventListener('click', function() {
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('login-form').classList.remove('hidden');
+            
+            // Clear fields
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        });
+        
+        // Initialize charts for dashboard
+        function initCharts() {
+            // User Statistics Chart
+            const userCtx = document.getElementById('user-chart').getContext('2d');
+            new Chart(userCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Active Users',
+                        data: [120, 190, 170, 220, 240, 280, 320],
+                        borderColor: '#4f46e5',
+                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Encode/Decode Ratio Chart
+            const ratioCtx = document.getElementById('ratio-chart').getContext('2d');
+            new Chart(ratioCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Encodes', 'Decodes'],
+                    datasets: [{
+                        data: [1248, 896],
+                        backgroundColor: ['#4f46e5', '#10b981'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - StegoHide</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+    <custom-navbar></custom-navbar>
+    
+    <main class="container py-5">
+        <!-- Login Form -->
+        <div id="login-form" class="card shadow-sm mx-auto" style="max-width: 400px;">
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <div class="bg-primary bg-opacity-10 rounded-circle p-3 d-inline-flex mb-3">
+                        <i class="bi bi-shield-lock fs-3 text-primary"></i>
+                    </div>
+                    <h1 class="h3 mb-2">Admin Login</h1>
+                    <p class="text-muted">Enter your credentials to access the admin dashboard</p>
+                </div>
+                
+                <form class="needs-validation">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" id="username" class="form-control" placeholder="Enter admin username" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                            <button class="btn btn-outline-secondary" type="button" id="toggle-admin-password">
+                                <i class="bi bi-eye-slash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="remember">
+                            <label class="form-check-label" for="remember">Remember me</label>
+                        </div>
+                        <a href="#" class="text-decoration-none">Forgot password?</a>
+                    </div>
+                    
+                    <button type="button" id="login-btn" class="btn btn-primary w-100">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Dashboard -->
+        <div id="dashboard" class="d-none">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">
+                    <i class="bi bi-shield me-2"></i>Admin Dashboard
+                </h1>
+                <button id="logout-btn" class="btn btn-light">
+                    <i class="bi bi-box-arrow-right me-2"></i>Logout
+                </button>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="text-muted mb-1">Total Encodes</p>
+                                    <h3 class="mb-0">1,248</h3>
+                                </div>
+                                <div class="bg-primary bg-opacity-10 p-3 rounded">
+                                    <i class="bi bi-lock fs-4 text-primary"></i>
+                                </div>
+                            </div>
+                            <p class="text-success mt-2 mb-0">
+                                <i class="bi bi-arrow-up"></i> 12% from last month
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Similar cards for Decodes, Users, and Storage -->
+                <!-- ...existing stats cards... -->
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Recent Activity</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item">
+                        <div class="d-flex gap-3">
+                            <div class="bg-primary bg-opacity-10 p-3 rounded">
+                                <i class="bi bi-lock fs-5 text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="mb-1">Image Encoded</h6>
+                                    <small class="text-muted">2 min ago</small>
+                                </div>
+                                <p class="text-muted small mb-0">User encoded a 1.2MB image with 128 characters</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- More activity items -->
+                    <!-- ...existing activity items... -->
+                </div>
+            </div>
+            
+            <!-- Charts -->
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">User Statistics</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="user-chart" height="250"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Encode/Decode Ratio</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="ratio-chart" height="250"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <custom-footer></custom-footer>
+    
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Keep the existing JavaScript but update icon classes -->
+    <script>
+        // ...existing JavaScript code...
+        // Update icon classes from feather to Bootstrap icons in the JavaScript code
+    </script>
+</body>
+</html>
