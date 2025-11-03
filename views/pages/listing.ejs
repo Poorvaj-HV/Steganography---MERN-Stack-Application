@@ -1,0 +1,14 @@
+<% layout('layouts/boilerplate') -%>
+
+<body>
+    <h3> All data </h3>
+    <ul>
+        <% for(let data of allData) { %>
+            <li>
+                <strong>Image Name:</strong> <%= data.image %> 
+                <strong>Email:</strong> <%= data.email %>
+            </li>
+        <% }; %>
+    </ul>
+</body>
+</html>
