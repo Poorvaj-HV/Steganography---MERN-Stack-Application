@@ -329,18 +329,23 @@
             <div class="mb-3">
                 <label for="image" class="form-label"><i class="fa-solid fa-upload"></i> 1. Upload Image:</label>
                 <input type="file" name="Encode[image]" accept="image/*" class="form-control" required>
+                <div class="invalid-feedback">Please use a image with file type JPG or PNG</div>
             </div>
             <div class="mb-3">
                 <label for="secret-message" class="form-label"><i class="fa-regular fa-keyboard"></i> 2. Enter Secret Message:</label>
                 <textarea name="Encode[secret-message]" rows="2" placeholder="Type your secret message here..." class="form-control" required></textarea>
+                <div class="invalid-feedback">Please enter a secret message</div>
             </div>
             <div class="mb-3">
                 <lable for="email" class="form-label"><i class="fa-regular fa-envelope"></i> Enter a valid Email</lable>
                 <input type="email" name="Encode[email]" placeholder="Enter a valid email" class="form-control" required>
+                <div class="invalid-feedback">please enter a valid Email</div>
             </div>
             <div class="mb-3">
                 <lable for="password" class="form-label"><i class="fa-solid fa-eye-slash"></i> Enter password </lable>
                 <input type="password" name="Encode[password]" placeholder="Enter password" class="form-control" required>
+                <div class="valid-feedback">password looks good</div>
+                <div class="invalid-feedback">please enter a password</div>
             </div>
             <br><br>
             <button class="btn btn-outline-dark"><i class="fa-solid fa-key"></i> Encode Message </button>
