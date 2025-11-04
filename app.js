@@ -9,6 +9,7 @@ const wrapAsync = require('./utils/wrapAsync.js');
 const ExpressError = require('./utils/ExpressError.js');
 // const multer = require('multer');
 // const sharp = require('sharp');
+// remainder - apply wrapAsync where needed in routes that use async functions ****
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -151,7 +152,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-    let { statusCode, message } = err;
+    let { statusCode=500, message="Something went wrong..!!" } = err;
     res.status(statusCode).send(message);
 });
 
