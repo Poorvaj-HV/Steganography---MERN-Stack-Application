@@ -94,29 +94,31 @@ router.get('/decode/:id', (req, res) => {
 });
 
 // Admin credentials
+const ADMIN_EMAIL = 'poorvaj@gmail.com';
 const ADMIN_USERNAME = 'poorvaj';
 const ADMIN_PASSWORD = 'P29';
 
 // Admin authentication middleware
-function requireAdmin(req, res, next) {
+function requireAdmin(req, res, next) {     // middleware to check if admin is logged in
     if (req.session.isAdmin) {
         return next();
     }
     res.redirect('/admin');
 }
 
-router.get('/admin', (req, res) => {
-    if (req.session.isAdmin) {
+router.get('/admin', (req, res) => {    // admin login page
+    if (req.session.isAdmin) {      // prevent already logged-in admins from seeing the login page again
         return res.redirect('/listings');
     }
     res.render('pages/admin.ejs');
 });
 
-router.post('/admin/login', (req, res) => {
+router.post('/admin/login', (req, res) => {     // form action routes to here
     const { username, password } = req.body;
-    
+
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
         req.session.isAdmin = true;
+        req.flash('success', 'Logged in successfully as admin');
         res.redirect('/listings');
     } else {
         req.flash('error', 'Invalid admin credentials');
@@ -124,8 +126,9 @@ router.post('/admin/login', (req, res) => {
     }
 });
 
-router.post('/admin/logout', (req, res) => {
+router.post('/admin/logout', (req, res) => {    // admin logout
     req.session.isAdmin = false;
+    req.flash('success', 'Logged out successfully');
     res.redirect('/admin');
 });
 
