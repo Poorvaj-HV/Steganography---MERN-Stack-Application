@@ -38,9 +38,10 @@ const sessionOptions = {
 app.use(session(sessionOptions));
 app.use(flash());
 
-app.use((req, res, next) => {
+app.use((req, res, next) => {   // this function will run for every single request and set these local variables for all templates
     res.locals.success = req.flash('success');  // without next(), we will stuck in this middleware
     res.locals.error = req.flash('error');
+    res.locals.isAdmin = req.session.isAdmin || false;
     next();
 });
 
