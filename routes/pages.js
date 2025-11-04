@@ -93,11 +93,43 @@ router.get('/decode/:id', (req, res) => {
     console.log(eData);
 });
 
+// Admin credentials
+const ADMIN_USERNAME = 'poorvaj';
+const ADMIN_PASSWORD = 'P29';
+
+// Admin authentication middleware
+function requireAdmin(req, res, next) {
+    if (req.session.isAdmin) {
+        return next();
+    }
+    res.redirect('/admin');
+}
+
 router.get('/admin', (req, res) => {
+    if (req.session.isAdmin) {
+        return res.redirect('/listings');
+    }
     res.render('pages/admin.ejs');
 });
 
-router.get('/listings', async(req, res) => {
+router.post('/admin/login', (req, res) => {
+    const { username, password } = req.body;
+    
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+        req.session.isAdmin = true;
+        res.redirect('/listings');
+    } else {
+        req.flash('error', 'Invalid admin credentials');
+        res.redirect('/admin');
+    }
+});
+
+router.post('/admin/logout', (req, res) => {
+    req.session.isAdmin = false;
+    res.redirect('/admin');
+});
+
+router.get('/listings', requireAdmin, async(req, res) => {
     const allData = await Encode.find({});
     res.render('pages/listing.ejs', { allData });
 });
