@@ -6,6 +6,7 @@ module.exports.encodeSchema = Joi.object({
     Encode: Joi.object({
         message : Joi.string().required().max(500),
         email: Joi.string().required().email(),
+        otp: Joi.string().required().min(6).length(6),
         password: Joi.string().required().min(5).max(20),
     }).required(),
 });
