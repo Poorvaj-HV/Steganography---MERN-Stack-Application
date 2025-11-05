@@ -7,9 +7,10 @@ const ExpressError = require('../utils/ExpressError.js');
 const multer = require('multer');
 const { storage, cloudinary } = require('../cloudConfig.js');
 const crypto = require('crypto');
-// const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 const streamifier = require('streamifier');
 const bcrypt = require('bcrypt');
+const validator = require('validator');
 
 const { hideMessage, extractMessage } = require('../utils/steganography.js');
 
@@ -33,17 +34,17 @@ function uploadBufferToCloudinary(buffer, folder = '', filename = '') {
     });
 }
 
-// // OTP storage
-// const otpStore = new Map();
+// OTP storage
+const otpStore = new Map();
 
-// // Email transporter
-// const transporter = nodemailer.createTransport({
-//     service: 'gmail',
-//     auth: {
-//         user: process.env.EMAIL_USER,
-//         pass: process.env.EMAIL_PASS
-//     }
-// });
+// Email transporter using Gmail App Password
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
 
 
 router.get('/home', (req, res) => {
@@ -54,138 +55,98 @@ router.get('/encode', (req, res) => {
     res.render('pages/encode.ejs');
 });
 
-/*
-  POST /encode
-  - Uses memoryUpload to get original image buffer
-  - Encrypts message with AES-256-GCM using password-derived key
-  - Hides the encrypted payload inside the original image (steganography.hideMessage)
-  - Uploads original + generated stego buffers to Cloudinary via uploadBufferToCloudinary
-  - Hashes password with bcrypt and saves document to MongoDB
-*/
+router.post('/send-otp', async ( req, res ) => {
+    const { email } = req.body;
+    if (!validator.isEmail(email)) {
+        return res.status(400).json({ error: 'Invalid email address' });
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    otpStore.set(email, { otp, createdAt: Date.now() });
+
+    try {
+        await transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Your OTP for Steganography Verification',
+            text: `Your OTP is: ${otp}. It is valid for 5 minutes.`
+        });
+
+        res.status(200).json({ message: 'OTP sent successfully to your email.' });
+    } catch (err) {
+        console.error('Email sending failed: ', err);
+        res.status(500).json({ error: 'Failed to send OTP. Please try again later.'});
+    }
+});
+
+// ✅ Encode route (with OTP validation)
 router.post('/encode', memoryUpload.single('originalImage'), wrapAsync(async (req, res) => {
-    let { error } = encodeSchema.validate(req.body);
+    // Validate the schema
+    let { error } = encodeSchema.validate({
+        Encode: {
+            message: req.body.Encode.message,
+            email: req.body.Encode.email,
+            otp: req.body.Encode.otp,
+            password: req.body.Encode.password
+        }
+    });
+
     if (error) {
         let errMsg = error.details.map((el) => el.message).join(',');
         throw new ExpressError(400, errMsg);
     }
 
-    const { message, email, password } = req.body.Encode;
+    const { message, email, otp, password } = req.body.Encode;
 
-    if (!req.file || !req.file.buffer) {
-        throw new ExpressError(400, 'Original image file is required');
+    // OTP validation
+    const stored = otpStore.get(email);
+    if (!stored || stored.otp !== otp || Date.now() - stored.createdAt > 5 * 60 * 1000) {
+        throw new ExpressError(400, 'Invalid or expired OTP.');
     }
+    
+    // Upload original image
+    const originalUpload = await uploadBufferToCloudinary(req.file.buffer, 'stegohide_DEV/originals', 'orig');
 
-    // AES-256-GCM encryption
-    const algorithm = 'aes-256-gcm';
-    const key = crypto.scryptSync(password, 'salt', 32); // consistent derivation; same at decode
-    const iv = crypto.randomBytes(12); // recommended length for GCM
-    const cipher = crypto.createCipheriv(algorithm, key, iv);
-    let encryptedMessage = cipher.update(message, 'utf8', 'hex');
-    encryptedMessage += cipher.final('hex');
-    const authTagHex = cipher.getAuthTag().toString('hex');
+    // Encrypt and hide message
+    const iv = crypto.randomBytes(16);
+    const key = crypto.scryptSync(password, 'salt', 32);
+    const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
+    let encrypted = cipher.update(message, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    const authTag = cipher.getAuthTag().toString('hex');
 
-    // Store combined payload as encrypted:authTag:ivHex
-    const storedMessage = `${encryptedMessage}:${authTagHex}:${iv.toString('hex')}`;
+    const payload = `${iv.toString('hex')}:${authTag}:${encrypted}`;
+    const stegoBuffer = await hideMessage(req.file.buffer, payload);
 
-    // Hide the storedMessage string inside the original image buffer
-    const originalBuffer = req.file.buffer;
-    const stegoBuffer = await hideMessage(originalBuffer, storedMessage);
+    // Upload stego image
+    const stegoUpload = await uploadBufferToCloudinary(stegoBuffer, 'stegohide_DEV/stegos', 'stego');
 
-    // Upload original image and stego image buffers to Cloudinary
-    const origUpload = await uploadBufferToCloudinary(originalBuffer, 'stegohide_DEV/originals', `orig-${Date.now()}`);
-    const stegoUpload = await uploadBufferToCloudinary(stegoBuffer, 'stegohide_DEV/stegos', `stego-${Date.now()}`);
-
-    // Hash password with bcrypt
+    // Hash password and save to DB
     const hashedPassword = await bcrypt.hash(password, 12);
-
     const newEncode = new Encode({
         originalImage: {
-            url: origUpload.secure_url,
-            filename: origUpload.public_id
+            url: originalUpload.secure_url,
+            filename: originalUpload.public_id
         },
         stegoImage: {
             url: stegoUpload.secure_url,
             filename: stegoUpload.public_id
         },
-        // store the combined encrypted payload (so decode can use it without fetching image if desired)
-        message: storedMessage,
         email,
         password: hashedPassword
     });
-
     await newEncode.save();
-    req.flash('success', 'Message encoded and stego image created successfully!');
+
+    // Clear OTP after successful encoding
+    otpStore.delete(email);
+
+    req.flash('success', 'Message encoded successfully!');
     res.redirect('/encode');
 }));
 
 router.get('/decode', (req, res) => {
     res.render('pages/decode.ejs');
 });
-
-// // Send OTP for decode
-// router.post('/decode/send-otp', wrapAsync(async (req, res) => {
-//     const { email } = req.body;
-    
-//     if (!email.endsWith('@gmail.com')) {
-//         return res.status(400).json({ error: 'Only Gmail addresses are allowed' });
-//     }
-    
-//     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-//     otpStore.set(email, { otp, expires: Date.now() + 300000 });
-    
-//     const mailOptions = {
-//         from: process.env.EMAIL_USER,
-//         to: email,
-//         subject: 'Steganography App - Decode Verification',
-//         text: `Your OTP for decoding is: ${otp}. Valid for 5 minutes.`
-//     };
-    
-//     await transporter.sendMail(mailOptions);
-//     res.json({ success: true, message: 'OTP sent successfully' });
-// }));
-
-// // Decode with OTP verification
-// router.post('/decode', wrapAsync(async (req, res) => {
-//     let { error } = decodeSchema.validate(req.body);
-//     if (error) {
-//         let errMsg = error.details.map((el) => el.message).join(',');
-//         throw new ExpressError(400, errMsg);
-//     }
-    
-//     const { email, password } = req.body.Decode;
-    
-//     const encodedData = await Encode.findOne({ email });
-//     if (!encodedData) {
-//         throw new ExpressError(404, 'No encoded data found for this email');
-//     }
-    
-//     const isValidPassword = await bcrypt.compare(password, encodedData.password);
-//     if (!isValidPassword) {
-//         throw new ExpressError(401, 'Invalid password');
-//     }
-    
-//     const [encryptedMessage, authTag, iv] = encodedData.message.split(':');
-//     const algorithm = 'aes-256-gcm';
-//     const key = crypto.scryptSync(password, 'salt', 32);
-//     const decipher = crypto.createDecipheriv(algorithm, key, Buffer.from(iv, 'hex'));
-//     decipher.setAuthTag(Buffer.from(authTag, 'hex'));
-    
-//     let decryptedMessage = decipher.update(encryptedMessage, 'hex', 'utf8');
-//     decryptedMessage += decipher.final('utf8');
-    
-//     res.json({
-//         success: true,
-//         message: decryptedMessage,
-//         originalImage: encodedData.originalImage.url,
-//         stegoImage: encodedData.stegoImage.url
-//     });
-// }));
-
-// router.get('/decode/:id', (req, res) => {
-//     let { id } = req.params;
-//     const eData = Encode.findById(id);
-//     console.log(eData);
-// });
 
 // Admin credentials
 const ADMIN_EMAIL = 'poorvaj@gmail.com';
