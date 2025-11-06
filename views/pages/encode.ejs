@@ -9,6 +9,15 @@
     <div class="formdiv">
         <form method="POST" action="/encode" novalidate class="needs-validation" enctype="multipart/form-data">
             <div class="mb-3">
+                <label for="title" class="form-label">
+                    <i class="fa-solid fa-heading"></i> Title for your encryption:
+                </label>
+                <input type="text" id="title" name="Encode[title]" 
+                    placeholder="Give a memorable title to identify this encryption" 
+                    class="form-control" required>
+                <div class="invalid-feedback">Please provide a title</div>
+            </div>
+            <div class="mb-3">
                 <label for="image" class="form-label"><i class="fa-solid fa-upload"></i> 1. Upload Image:</label>
                 <input type="file" name="originalImage" accept="image/*" class="form-control" required>
                 <div class="invalid-feedback">Please use a image with file type JPEG or PNG</div>
@@ -18,11 +27,6 @@
                 <textarea name="Encode[message]" rows="2" placeholder="Type your secret message here..." class="form-control" required></textarea>
                 <div class="invalid-feedback">Please enter a secret message</div>
             </div>
-            <!-- <div class="mb-3">
-                <lable for="email" class="form-label"><i class="fa-regular fa-envelope"></i> Enter a valid Email</lable>
-                <input type="email" name="Encode[email]" placeholder="Enter a valid email" class="form-control" required>
-                <div class="invalid-feedback">please enter a valid Email</div>
-            </div> -->
             <div class="mb-3">
                 <label for="email" class="form-label"><i class="fa-regular fa-envelope"></i> Enter a valid Email</label>
                 <div class="input-group">
@@ -33,7 +37,7 @@
             </div>
 
             <div class="mb-3" id="otpDiv" style="display: none;">
-                <label for="otp" class="form-label"><i class="fa-solid fa-key"></i> Enter OTP</label>
+                <label for="otp" class="form-label"><i class="fa-solid fa-shield-halved"></i> Enter OTP</label>
                 <input type="text" id="otp" name="Encode[otp]" placeholder="Enter 6-digit OTP" class="form-control" maxlength="6" required>
                 <div class="invalid-feedback">Please enter valid OTP</div>
             </div>
