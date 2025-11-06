@@ -1,41 +1,175 @@
 <% layout('layouts/boilerplate') -%>
 
 <body>
-    <div class="row">
-        <div class="col-8 offset-2">
-            <h2> <i class="fa-solid fa-lock-open"></i> Decryption : Reveal Hidden Message </h2>
-            <p> Enter a valid email to extract the secret message hidden within it. </p>
-            <br>
-    <div class="formdiv">
-        <form method="POST" action="/decode" novalidate class="needs-validation">
-            <div class="mb-3">
-                <lable for="email" class="form-label"><i class="fa-regular fa-envelope"></i> Enter a valid Email</lable>
-                <input type="email" name="Encode[email]" placeholder="Enter a valid email" class="form-control" required>
-                <div class="invalid-feedback">Please enter a valid Email</div>
-                <div class="valid-feedback">email looks good, verify email</div>
-            </div>
-            <div class="mb-3">
-                <lable for="password" class="form-label"><i class="fa-solid fa-eye-slash"></i> Enter password </lable>
-                <input type="password" name="Encode[password]" placeholder="Enter password" class="form-control" required>
-                <div class="invalid-feedback">please enter a correct password</div>
-            </div>
-            <button class="btn btn-outline-dark" type="submit"><i class="fa-solid fa-square-envelope"></i> Verify Email </button>
-            <br><br>
-            <div class="mb-3 col-md-4">
-                <label for="otp" class="form-label"> Enter OTP </label>
-                <input type="text" name="otp" inputmode="numeric" autocomplete="one-time-code" pattern="\d{6}" maxlength="6" class="form-control" required>
-                <div class="invalid-feedback">Please enter a valid 6-digit OTP</div>
-            </div>
-            <button class="btn btn-outline-dark" type="submit"><i class="fa-solid fa-asterisk"></i> Confirm </button>
+<div class="row">
+    <div class="col-8 offset-2">
+        <h2><i class="fa-solid fa-lock-open"></i> Decryption: Reveal Hidden Message</h2>
+        <p>Enter your email and password to reveal the hidden message.</p>
+        <br>
+        <div class="formdiv">
+            <form id="decodeForm" novalidate class="needs-validation">
+                <div class="mb-3">
+                    <label for="email" class="form-label">
+                        <i class="fa-regular fa-envelope"></i> Email Address
+                    </label>
+                    <div class="input-group">
+                        <input type="email" id="email" name="Decode[email]" class="form-control" required>
+                        <button type="button" id="verifyBtn" class="btn btn-outline-dark">Verify</button>
+                    </div>
+                    <div class="invalid-feedback">Please enter a valid email</div>
+                </div>
 
-            <br><br><br>
-            <h3><i class="fa-solid fa-envelope-open"></i> Hidden Message Revealed</h3>
-            <br>
-            <div class="mb-3">
-                <textarea name="Encode[secret-message]" rows="2" placeholder="Type your secret message here..." class="form-control" required></textarea>
-            </div>
-        </form>
+                <div class="mb-3">
+                    <label for="password" class="form-label">
+                        <i class="fa-solid fa-key"></i> Password
+                    </label>
+                    <input type="password" id="password" name="Decode[password]" class="form-control" required>
+                    <div class="invalid-feedback">Please enter your password</div>
+                </div>
+
+                <div class="mb-3" id="encryptionListDiv" style="display: none;">
+                    <label for="encryptionSelect" class="form-label">
+                        <i class="fa-solid fa-list"></i> Select Encryption
+                    </label>
+                    <select id="encryptionSelect" class="form-control" required>
+                        <option value="">Choose an encryption...</option>
+                    </select>
+                </div>
+
+                <div class="mb-3" id="otpDiv" style="display: none;">
+                    <label for="otp" class="form-label">
+                        <i class="fa-solid fa-shield-halved"></i> Enter OTP
+                    </label>
+                    <div class="input-group">
+                        <input type="text" id="otp" name="Decode[otp]" class="form-control" 
+                               maxlength="6" pattern="\d{6}" inputmode="numeric" required>
+                        <button type="button" id="verifyOtpBtn" class="btn btn-outline-dark">Verify OTP</button>
+                    </div>
+                    <div class="invalid-feedback">Please enter valid 6-digit OTP</div>
+                </div>
+
+                <div id="messageDiv" style="display: none;">
+                    <h3><i class="fa-solid fa-envelope-open"></i> Hidden Message</h3>
+                    <div class="mb-3">
+                        <textarea id="hiddenMessage" class="form-control" rows="3" readonly></textarea>
+                    </div>
+                </div>
+            </form>
         </div>
-      </div>
     </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('decodeForm');
+    const verifyBtn = document.getElementById('verifyBtn');
+    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+    const encryptionListDiv = document.getElementById('encryptionListDiv');
+    const encryptionSelect = document.getElementById('encryptionSelect');
+    const otpDiv = document.getElementById('otpDiv');
+    const messageDiv = document.getElementById('messageDiv');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const otpInput = document.getElementById('otp');
+    const hiddenMessage = document.getElementById('hiddenMessage');
+
+    verifyBtn.addEventListener('click', async function() {
+        const email = emailInput.value;
+        const password = passwordInput.value;
+
+        if (!email || !password) {
+            alert('Please enter both email and password');
+            return;
+        }
+
+        try {
+            const response = await fetch('/verify-decode', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    Decode: { email, password }
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Populate encryption selection dropdown
+                encryptionSelect.innerHTML = '<option value="">Choose an encryption...</option>';
+                data.encryptions.forEach(enc => {
+                    const option = document.createElement('option');
+                    option.value = enc._id;
+                    option.textContent = `${enc.title} (${new Date(enc.createdAt).toLocaleDateString()})`;
+                    encryptionSelect.appendChild(option);
+                });
+
+                encryptionListDiv.style.display = 'block';
+                verifyBtn.disabled = true;
+                emailInput.readOnly = true;
+                passwordInput.readOnly = true;
+                alert(data.message);
+            } else {
+                alert(data.error);
+            }
+        } catch (err) {
+            console.error('Error:', err);
+            alert('Verification failed. Please try again.');
+        }
+    });
+
+    encryptionSelect.addEventListener('change', function() {
+        if (this.value) {
+            otpDiv.style.display = 'block';
+        } else {
+            otpDiv.style.display = 'none';
+            messageDiv.style.display = 'none';
+        }
+    });
+
+    verifyOtpBtn.addEventListener('click', async function() {
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        const otp = otpInput.value;
+        const encryptionId = encryptionSelect.value;
+
+        if (!otp || otp.length !== 6) {
+            alert('Please enter a valid 6-digit OTP');
+            return;
+        }
+
+        try {
+            const response = await fetch('/reveal-message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    Decode: {
+                        email,
+                        password,
+                        otp,
+                        encryptionId
+                    }
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                messageDiv.style.display = 'block';
+                hiddenMessage.value = data.message;
+                otpInput.readOnly = true;
+                verifyOtpBtn.disabled = true;
+            } else {
+                alert(data.error);
+            }
+        } catch (err) {
+            console.error('Error:', err);
+            alert('Failed to reveal message. Please try again.');
+        }
+    });
+});
+</script>
 </body>
