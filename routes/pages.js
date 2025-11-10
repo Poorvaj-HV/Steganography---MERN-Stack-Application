@@ -81,7 +81,7 @@ router.post('/send-otp', async ( req, res ) => {
     }
 });
 
-// ✅ Encode route (with OTP validation)
+// Encode route (with OTP validation)
 router.post('/encode', memoryUpload.single('originalImage'), wrapAsync(async (req, res) => {
     // Validate the schema
     let { error } = encodeSchema.validate({
@@ -317,6 +317,58 @@ router.get('/listings', requireAdmin, async(req, res) => {
     const allData = await Encode.find({});
     res.render('pages/listing.ejs', { allData });
 });
+
+router.post('/extract-message', wrapAsync(async (req, res) => {
+    const { recordId, password } = req.body;
+
+    if (!password) {
+        return res.json({ success: false, error: 'Password is required to decrypt.' });
+    }
+
+    try {
+        // Get specific record by ID
+        const record = await Encode.findById(recordId);
+        if (!record) {
+            return res.json({ success: false, error: 'Record not found' });
+        }
+
+        // Verify plaintext password against stored bcrypt hash
+        const valid = await bcrypt.compare(password, record.password);
+        if (!valid) {
+            return res.json({ success: false, error: 'Invalid password' });
+        }
+
+        // Download stego image
+        const response = await fetch(record.stegoImage.url);
+        if (!response.ok) {
+            return res.json({ success: false, error: 'Failed to download stego image' });
+        }
+        const arrayBuffer = await response.arrayBuffer();
+        const imageBuffer = Buffer.from(arrayBuffer);
+
+        // Extract encrypted payload from image
+        const payload = await extractMessage(imageBuffer);
+        const [ivHex, authTagHex, encryptedHex] = payload.split(':');
+
+        const iv = Buffer.from(ivHex, 'hex');
+        const authTag = Buffer.from(authTagHex, 'hex');
+        const encrypted = Buffer.from(encryptedHex, 'hex');
+
+        // Derive key from the provided plaintext password
+        const key = crypto.scryptSync(password, 'salt', 32);
+        const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv);
+        decipher.setAuthTag(authTag);
+
+        let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+        decrypted += decipher.final('utf8');
+
+        res.json({ success: true, message: decrypted });
+        
+    } catch (err) {
+        console.error('Extraction error:', err);
+        res.json({ success: false, error: 'Failed to extract message' });
+    }
+}));
 
 router.get('/about', (req, res) => {
     res.render('pages/about.ejs');
