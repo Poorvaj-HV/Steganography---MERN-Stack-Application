@@ -148,11 +148,3 @@ User → Upload Image → Node.js Server
 - Video/audio steganography  
 
 ---
-<<<<<<< HEAD
-
-## 👨‍💻 **Developed By**
-
-**Poorvaj H V**  
-Final Year Computer Science Student
-=======
->>>>>>> 4bfbaa9 (updated README.md)
